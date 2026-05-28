@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Off-Market Golf Course Residence, Sun City Summerlin &middot; Meisztro, The Meiszburger Group</title>
+<meta name="description" content="An off-market single-story home on the golf course in Sun City Summerlin, with a 3-car garage, private pool and spa, and open fairway and mountain views. Presented by Patrick Meiszburger; represented by its respective listing agent and brokerage." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css" />
+<style>
+  /* Listing-specific styles */
+  .listing-hero {
+    padding: 9rem 0 0;
+    color: #fff;
+    background-color: #0a0a0a;
+    background-image:
+      linear-gradient(rgba(0,0,0,0.50), rgba(0,0,0,0.82)),
+      url('photos/folsom_09.jpg');
+    background-size: cover;
+    background-position: center;
+    border-bottom: 1px solid var(--line);
+  }
+  .listing-hero .container { padding-top: 1rem; padding-bottom: 4rem; position: relative; z-index: 2; }
+  .listing-hero h1, .listing-hero h2, .listing-hero p, .listing-hero .eyebrow { color: #fff; }
+  .listing-hero h1 { max-width: 820px; margin: 0 auto 0.5rem; text-align: center; }
+  .listing-hero .listing-address-line { text-align: center; max-width: 620px; margin: 0 auto 2rem; font-size: 1.05rem; }
+  .listing-stats {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0;
+    border-top: 1px solid rgba(255,255,255,0.18);
+    border-bottom: 1px solid rgba(255,255,255,0.18);
+    margin-top: 2rem;
+  }
+  .listing-stat {
+    flex: 1 1 180px;
+    text-align: center;
+    padding: 1.5rem 1rem;
+    border-right: 1px solid rgba(255,255,255,0.12);
+  }
+  .listing-stat:last-child { border-right: none; }
+  .listing-stat .stat-num {
+    font-size: 2rem;
+    color: #fff;
+    font-weight: 700;
+  }
+  .listing-stat .stat-label {
+    font-size: 0.7rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.7);
+    margin-top: 0.4rem;
+  }
+
+  /* Photo gallery */
+  .gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 0.5rem;
+  }
+  .gallery-grid figure {
+    position: relative;
+    overflow: hidden;
+    aspect-ratio: 4/3;
+    background: var(--bg-soft);
+    cursor: pointer;
+  }
+  .gallery-grid figure.feature {
+    grid-column: span 2;
+    grid-row: span 2;
+    aspect-ratio: 4/3.5;
+  }
+  @media (max-width: 700px) {
+    .gallery-grid figure.feature { grid-column: span 1; grid-row: span 1; }
+  }
+  .gallery-grid img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s var(--ease);
+  }
+  .gallery-grid figure:hover img { transform: scale(1.04); }
+
+  /* Lightbox */
+  .lightbox {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.95);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 200;
+    padding: 2rem;
+  }
+  .lightbox.open { display: flex; }
+  .lightbox img {
+    max-width: 95%;
+    max-height: 92vh;
+    object-fit: contain;
+    box-shadow: 0 30px 70px rgba(0,0,0,0.6);
+  }
+  .lightbox-close, .lightbox-prev, .lightbox-next {
+    position: absolute;
+    background: rgba(0,0,0,0.5);
+    color: #fff;
+    border: 1px solid rgba(255,255,255,0.3);
+    width: 48px; height: 48px;
+    cursor: pointer;
+    font-size: 1.4rem;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s var(--ease);
+  }
+  .lightbox-close:hover, .lightbox-prev:hover, .lightbox-next:hover {
+    background: #fff;
+    color: #000;
+  }
+  .lightbox-close { top: 1.5rem; right: 1.5rem; }
+  .lightbox-prev  { left: 1.5rem; top: 50%; transform: translateY(-50%); }
+  .lightbox-next  { right: 1.5rem; top: 50%; transform: translateY(-50%); }
+  .lightbox-counter {
+    position: absolute;
+    bottom: 1.5rem; left: 50%;
+    transform: translateX(-50%);
+    color: rgba(255,255,255,0.85);
+    font-size: 0.78rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+  }
+
+  /* Description + features */
+  .listing-body {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap: 4rem;
+    align-items: start;
+  }
+  @media (max-width: 900px) {
+    .listing-body { grid-template-columns: 1fr; gap: 2.5rem; }
+  }
+  .listing-prose p { margin-bottom: 1.25rem; font-size: 1rem; line-height: 1.8; }
+  .features-card {
+    background: var(--bg-card);
+    border: 1px solid var(--line);
+    padding: 2.25rem;
+    box-shadow: var(--shadow-md);
+    position: sticky;
+    top: 6rem;
+  }
+  .features-card::before {
+    content: '';
+    display: block;
+    width: 40px; height: 2px;
+    background: var(--text);
+    margin-bottom: 1.5rem;
+  }
+  .features-card h3 {
+    font-size: 1rem;
+    letter-spacing: 0.2em;
+    margin-bottom: 1rem;
+  }
+  .features-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .features-list li {
+    padding: 0.7rem 0;
+    border-bottom: 1px solid var(--line);
+    font-size: 0.92rem;
+    color: var(--text-soft);
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+  .features-list li:last-child { border-bottom: none; }
+  .features-list li::before {
+    content: '\25C6';
+    color: var(--silver-dark);
+    font-size: 0.6rem;
+    margin-top: 0.4rem;
+  }
+
+  /* Inquiry section */
+  .inquiry-band {
+    background: #0a0a0a;
+    color: #fff;
+    padding: 4rem 0;
+    text-align: center;
+  }
+  .inquiry-band h2, .inquiry-band p, .inquiry-band .eyebrow { color: #fff; }
+  .inquiry-band .eyebrow { color: rgba(255,255,255,0.85); }
+  .inquiry-band p { max-width: 620px; margin: 0 auto 2rem; color: rgba(255,255,255,0.85); }
+  .inquiry-band .btn { border-color: #fff; color: #fff; }
+  .inquiry-band .btn:hover { background: #fff; color: #0a0a0a; }
+  .inquiry-actions { display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container nav">
+    <a aria-label='Meisztro, The Meiszburger Group' class='brand' href='/'>
+      <img src="images/meisztro-logo-black.png" alt="Meisztro, Invest In Your Independence" class="brand-logo-img" />
+    </a>
+    <nav>
+      <ul class="nav-links">
+        <li><a href='/'>Home</a></li>
+        <li><a class='active' href='/listings'>Listings</a></li>
+        <li><a href='/property-search'>Search</a></li>
+        <li><a href='/services'>Services</a></li>
+        <li><a href='/about'>About</a></li>
+        <li><a href='/contact'>Contact</a></li>
+      </ul>
+    </nav>
+    <div class="nav-cta">
+      <a class='btn btn--red' href='/contact'>Book a Call</a>
+      <button class="nav-toggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</header>
+
+<!-- ============ LISTING HERO ============ -->
+<section class="listing-hero">
+  <div class="container">
+    <div style="text-align: center;">
+      <span class="eyebrow">Featured Off-Market Listing &middot; Sun City Summerlin</span>
+    </div>
+    <h1>On The Golf Course</h1>
+    <p class="listing-address-line">A single-story home set directly on the golf course, with a private pool and spa and open mountain views.</p>
+    <div class="listing-stats">
+      <div class="listing-stat">
+        <div class="stat-num">2</div>
+        <div class="stat-label">Bedrooms</div>
+      </div>
+      <div class="listing-stat">
+        <div class="stat-num">2</div>
+        <div class="stat-label">Bathrooms</div>
+      </div>
+      <div class="listing-stat">
+        <div class="stat-num">2,102</div>
+        <div class="stat-label">Square Feet</div>
+      </div>
+      <div class="listing-stat">
+        <div class="stat-num">3</div>
+        <div class="stat-label">Car Garage</div>
+      </div>
+      <div class="listing-stat">
+        <div class="stat-num">1</div>
+        <div class="stat-label">Story</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ABOUT THIS PROPERTY ============ -->
+<section class="section">
+  <div class="container listing-body">
+    <div class="listing-prose reveal">
+      <span class="eyebrow">About This Property</span>
+      <h2 style="margin-bottom: 1.5rem;">Single-story ease. <span class="silver-shine">On the fairway.</span></h2>
+      <p>Set along the fairways of Sun City Summerlin, this off-market home is a single-story residence that pairs bright, easy living with one of the most coveted settings in the community. The backyard opens directly onto the golf course, with uninterrupted views of the fairway and the mountains beyond.</p>
+      <p>Just over 2,102 square feet unfolds in an open, light-filled layout with 2 bedrooms, 2 bathrooms, and a spacious great room anchored by a fireplace. Vaulted ceilings, generous windows, and a warm, neutral palette keep the home feeling airy and inviting throughout.</p>
+      <p>The kitchen sits at the heart of the home, with abundant cabinetry, a center island, and a casual dining nook that looks out to the backyard. It flows naturally into the living and dining spaces, making both everyday meals and larger gatherings effortless.</p>
+      <p>The owner's suite is a private retreat with its own ensuite bath, while the second bedroom and full bath give guests a comfortable space of their own. A rare three-car garage adds generous room for vehicles, a workshop, or a golf cart.</p>
+      <p>Step outside and the home truly sets itself apart. A sparkling pool and spa anchor an extended paver patio with multiple lounging and dining areas, a built-in fire feature, and those open views across the golf course toward the horizon.</p>
+      <p>Built in 1998 and set on an 8,276 square foot lot, this is a rare opportunity to own a turnkey single-story home with a true resort-style backyard in one of Las Vegas's most established guard-gated golf communities.</p>
+    </div>
+
+    <aside class="features-card reveal">
+      <h3>PROPERTY FEATURES</h3>
+      <ul class="features-list">
+        <li>Sun City Summerlin, 89134</li>
+        <li>Guard-gated golf community</li>
+        <li>Single-story floor plan</li>
+        <li>Directly on the golf course</li>
+        <li>2 bedrooms</li>
+        <li>2 bathrooms</li>
+        <li>Over 2,102 square feet</li>
+        <li>3-car garage</li>
+        <li>Private pool and spa</li>
+        <li>Extended paver patio</li>
+        <li>Built-in fire feature</li>
+        <li>Golf course and mountain views</li>
+        <li>Open-concept great room</li>
+        <li>Fireplace</li>
+        <li>Vaulted ceilings</li>
+        <li>Center-island kitchen</li>
+        <li>Casual dining nook</li>
+        <li>Owner's suite with ensuite bath</li>
+        <li>Indoor-outdoor living</li>
+        <li>Built in 1998</li>
+        <li>8,276 square foot lot</li>
+      </ul>
+      <div style="margin-top: 1.5rem;">
+        <a class='btn btn--red' href='/contact' style='width: 100%; text-align: center;'>Inquire For Pricing</a>
+      </div>
+    </aside>
+  </div>
+</section>
+
+<!-- ============ PHOTO GALLERY ============ -->
+<section class="section section--cream">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">Photo Gallery</span>
+      <h2>Inside <span class="silver-shine">This Residence.</span></h2>
+      <p>Click any image to view full size. Use the arrow keys to browse.</p>
+    </div>
+
+    <div class="gallery-grid" id="gallery">
+      <figure class="feature" data-index="0"><img src="photos/folsom_09.jpg" alt="9920 Folsom Drive, Sun City Summerlin" loading="lazy" /></figure>
+      <figure data-index="1"><img src="photos/folsom_01.jpg" alt="9920 Folsom Drive, Sun City Summerlin" loading="lazy" /></figure>
+      <figure data-index="2"><img src="photos/folsom_03.jpg" alt="9920 Folsom Drive, Sun City Summerlin" loading="lazy" /></figure>
+      <figure data-index="3"><img src="photos/folsom_11.jpg" alt="9920 Folsom Drive, Sun City Summerlin" loading="lazy" /></figure>
+      <figure data-index="4"><img src="photos/folsom_02.jpg" alt="9920 Folsom Drive, Sun City Summerlin" loading="lazy" /></figure>
+      <figure data-index="5"><img src="photos/folsom_34.jpg" alt="9920 Folsom Drive, Sun City Summerlin" loading="lazy" /></figure>
+      <figure data-index="6"><img src="photos/folsom_33.jpg" alt="9920 Folsom Drive, Sun City Summerlin" loading="lazy" /></figure>
+      <figure data-index="7"><img src="photos/folsom_35.jpg" alt="9920 Folsom Drive, Sun City Summerlin" loading="lazy" /></figure>
+      <figure data-index="8"><img src="photos/folsom_10.jpg" alt="9920 Folsom Drive, Sun City Summerlin" loading="lazy" /></figure>
+      <figure data-index="9"><img src="photos/folsom_12.jpg" alt="9920 Folsom Drive, Sun City Summerlin" loading="lazy" /></figure>
+      <figure data-index="10"><img src="photos/folsom_04.jpg" alt="9920 Folsom Drive, Sun City Summerlin" loading="lazy" /></figure>
+      <figure data-index="11"><img src="photos/folsom_15.jpg" alt="9920 Folsom Drive, Sun City Summerlin" loading="lazy" /></figure>
+      <figure data-index="12"><img src="photos/folsom_24.jpg" alt="9920 Folsom Drive, Sun City Summerlin" loading="lazy" /></figure>
+      <figure data-index="13"><img src="photos/folsom_05.jpg" alt="9920 Folsom Drive, Sun City Summerlin" loading="lazy" /></figure>
+      <figure data-index="14"><img src="photos/folsom_23.jpg" alt="9920 Folsom Drive, Sun City Summerlin" loading="lazy" /></figure>
+      <figure data-index="15"><img src="photos/folsom_25.jpg" alt="9920 Folsom Drive, Sun City Summerlin" loading="lazy" /></figure>
+      <figure data-index="16"><img src="photos/folsom_14.jpg" alt="9920 Folsom Drive, Sun City Summerlin" loading="lazy" /></figure>
+      <figure data-index="17"><img src="photos/folsom_17.jpg" alt="9920 Folsom Drive, Sun City Summerlin" loading="lazy" /></figure>
+      <figure data-index="18"><img src="photos/folsom_16.jpg" alt="9920 Folsom Drive, Sun City Summerlin" loading="lazy" /></figure>
+      <figure data-index="19"><img src="photos/folsom_18.jpg" alt="9920 Folsom Drive, Sun City Summerlin" loading="lazy" /></figure>
+      <figure data-index="20"><img src="photos/folsom_13.jpg" alt="9920 Folsom Drive, Sun City Summerlin" loading="lazy" /></figure>
+      <figure data-index="21"><img src="photos/folsom_19.jpg" alt="9920 Folsom Drive, Sun City Summerlin" loading="lazy" /></figure>
+      <figure data-index="22"><img src="photos/folsom_21.jpg" alt="9920 Folsom Drive, Sun City Summerlin" loading="lazy" /></figure>
+      <figure data-index="23"><img src="photos/folsom_22.jpg" alt="9920 Folsom Drive, Sun City Summerlin" loading="lazy" /></figure>
+      <figure data-index="24"><img src="photos/folsom_20.jpg" alt="9920 Folsom Drive, Sun City Summerlin" loading="lazy" /></figure>
+      <figure data-index="25"><img src="photos/folsom_26.jpg" alt="9920 Folsom Drive, Sun City Summerlin" loading="lazy" /></figure>
+      <figure data-index="26"><img src="photos/folsom_27.jpg" alt="9920 Folsom Drive, Sun City Summerlin" loading="lazy" /></figure>
+      <figure data-index="27"><img src="photos/folsom_28.jpg" alt="9920 Folsom Drive, Sun City Summerlin" loading="lazy" /></figure>
+      <figure data-index="28"><img src="photos/folsom_32.jpg" alt="9920 Folsom Drive, Sun City Summerlin" loading="lazy" /></figure>
+      <figure data-index="29"><img src="photos/folsom_30.jpg" alt="9920 Folsom Drive, Sun City Summerlin" loading="lazy" /></figure>
+      <figure data-index="30"><img src="photos/folsom_29.jpg" alt="9920 Folsom Drive, Sun City Summerlin" loading="lazy" /></figure>
+      <figure data-index="31"><img src="photos/folsom_31.jpg" alt="9920 Folsom Drive, Sun City Summerlin" loading="lazy" /></figure>
+    </div>
+  </div>
+</section>
+
+<!-- ============ INQUIRY BAND ============ -->
+<section class="inquiry-band">
+  <div class="container">
+    <span class="eyebrow">Private Showings Available</span>
+    <h2 style="margin-bottom: 1rem;">Interested in this off-market listing?</h2>
+    <p>Contact Patrick at (702) 766-8782 to learn more, get pricing and availability, and arrange a private showing of this Sun City Summerlin residence on the golf course.</p>
+    <div class="inquiry-actions">
+      <a href="tel:+17027668782" class="btn">Call (702) 766-8782</a>
+      <a href="mailto:patrickmeiszburger@gmail.com?subject=Off-Market%20Listing%20Inquiry" class="btn">Email Patrick</a>
+      <a class='btn' href='/contact'>Schedule a Showing</a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CTA BANNER ============ -->
+<section class="cta-banner">
+  <div class="container">
+    <span class="eyebrow">More From Meisztro</span>
+    <h2>Looking for something else?</h2>
+    <p>Search every active home in the Las Vegas valley, or tell Patrick what you're after and he'll send a private shortlist.</p>
+    <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+      <a class='btn btn--red' href='/property-search'>Search All Properties</a>
+      <a class='btn' href='/contact'>Request Shortlist</a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ LIGHTBOX ============ -->
+<div class="lightbox" id="lightbox" role="dialog" aria-label="Photo gallery">
+  <button class="lightbox-close" id="lightbox-close" aria-label="Close">&times;</button>
+  <button class="lightbox-prev" id="lightbox-prev" aria-label="Previous photo">&#10094;</button>
+  <img id="lightbox-img" src="" alt="" />
+  <button class="lightbox-next" id="lightbox-next" aria-label="Next photo">&#10095;</button>
+  <div class="lightbox-counter" id="lightbox-counter">1 / 32</div>
+</div>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a aria-label='Meisztro, The Meiszburger Group' class='brand' href='/'>
+          <img src="images/meisztro-logo-white.png" alt="Meisztro, The Meiszburger Group" class="brand-logo-img" style="height: 56px;" />
+        </a>
+        <p>Invest in your independence. Private, results-driven real estate representation led by Patrick Meiszburger.</p>
+        <div class="footer-brokerage">
+          <span class="footer-brokerage-label">Brokered by</span>
+          <span class="footer-brokerage-name">HomeSmart</span>
+        </div>
+        <div class="social">
+          <a href="https://www.instagram.com/pmeisz/" target="_blank" rel="noopener" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.2c3.2 0 3.6 0 4.85.07 1.17.05 1.8.25 2.23.42.56.22.96.48 1.38.9.42.42.68.82.9 1.38.17.43.37 1.06.42 2.23.06 1.25.07 1.65.07 4.85s0 3.6-.07 4.85c-.05 1.17-.25 1.8-.42 2.23-.22.56-.48.96-.9 1.38-.42.42-.82.68-1.38.9-.43.17-1.06.37-2.23.42-1.25.06-1.65.07-4.85.07s-3.6 0-4.85-.07c-1.17-.05-1.8-.25-2.23-.42-.56-.22-.96-.48-1.38-.9-.42-.42-.68-.82-.9-1.38-.17-.43-.37-1.06-.42-2.23C2.21 15.6 2.2 15.2 2.2 12s0-3.6.07-4.85c.05-1.17.25-1.8.42-2.23.22-.56.48-.96.9-1.38.42-.42.82-.68 1.38-.9.43-.17 1.06-.37 2.23-.42C8.4 2.21 8.8 2.2 12 2.2zm0 1.8c-3.15 0-3.52 0-4.76.07-1.07.05-1.65.22-2.04.37-.51.2-.88.44-1.26.82-.38.38-.62.75-.82 1.26-.15.39-.32.97-.37 2.04C2.68 9.48 2.67 9.85 2.67 13s0 3.52.07 4.76c.05 1.07.22 1.65.37 2.04.2.51.44.88.82 1.26.38.38.75.62 1.26.82.39.15.97.32 2.04.37 1.24.07 1.61.07 4.76.07s3.52 0 4.76-.07c1.07-.05 1.65-.22 2.04-.37.51-.2.88-.44 1.26-.82.38-.38.62-.75.82-1.26.15-.39.32-.97.37-2.04.07-1.24.07-1.61.07-4.76s0-3.52-.07-4.76c-.05-1.07-.22-1.65-.37-2.04-.2-.51-.44-.88-.82-1.26-.38-.38-.75-.62-1.26-.82-.39-.15-.97-.32-2.04-.37C15.52 4 15.15 4 12 4zm0 3.07a4.93 4.93 0 1 1 0 9.86 4.93 4.93 0 0 1 0-9.86zm0 1.8a3.13 3.13 0 1 0 0 6.26 3.13 3.13 0 0 0 0-6.26zm5.14-2.04a1.15 1.15 0 1 1 0 2.3 1.15 1.15 0 0 1 0-2.3z"/></svg></a>
+          <a href="https://www.linkedin.com/in/meisztro/" target="_blank" rel="noopener" aria-label="LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5zM3 9h4v12H3V9zm7 0h3.8v1.64h.06a4.17 4.17 0 0 1 3.76-2.06c4.02 0 4.76 2.65 4.76 6.1V21h-4v-5.54c0-1.32-.03-3.02-1.84-3.02-1.84 0-2.12 1.44-2.12 2.92V21h-4V9z"/></svg></a>
+          <a href="https://www.tiktok.com/@meisztro" target="_blank" rel="noopener" aria-label="TikTok"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5.8 20.1a6.34 6.34 0 0 0 10.86-4.43V9.01a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1.84-.44z"/></svg></a>
+        </div>
+      </div>
+      <div class="footer-col"><h4>Explore</h4><ul><li><a href='/'>Home</a></li><li><a href='/listings'>Exclusive Listings</a></li><li><a href='/property-search'>Property Search</a></li><li><a href='/services'>Services</a></li><li><a href='/about'>About</a></li><li><a href='/contact'>Contact</a></li></ul></div>
+      <div class="footer-col"><h4>Services</h4><ul><li><a href='/services'>Buyer Representation</a></li><li><a href='/services'>Seller Strategy</a></li><li><a href='/services'>Investment Advisory</a></li><li><a href='/services'>Relocation</a></li></ul></div>
+      <div class="footer-col"><h4>Contact</h4><ul><li><a href="mailto:patrickmeiszburger@gmail.com">patrickmeiszburger@gmail.com</a></li><li><a href="tel:+17027670070">(702) 767-0070</a></li><li><a href="tel:+17027668782">(702) 766-8782</a></li><li>6630 Arroyo Springs St #1200<br />Las Vegas, NV</li></ul></div>
+    </div>
+    <div class="footer-bottom">
+      <div>&copy; <span data-year></span> Meisztro &middot; The Meiszburger Group &middot; Patrick Meiszburger, Licensed Realtor &middot; Brokered by HomeSmart</div>
+      <div class="disclaimer">Equal Housing Opportunity. This featured property is presented for informational purposes and is represented by its respective listing agent and brokerage. All information, including bedrooms, bathrooms, square footage, lot size, and features, is deemed reliable but not guaranteed and should be independently verified.</div>
+    </div>
+  </div>
+</footer>
+
+<script src="main.js"></script>
+<script>
+  // Lightbox for the photo gallery
+  (function(){
+    const figures = document.querySelectorAll('#gallery figure');
+    const lightbox = document.getElementById('lightbox');
+    const lbImg = document.getElementById('lightbox-img');
+    const lbCounter = document.getElementById('lightbox-counter');
+    const total = figures.length;
+    let current = 0;
+
+    function show(i) {
+      current = (i + total) % total;
+      const src = figures[current].querySelector('img').src;
+      lbImg.src = src;
+      lbCounter.textContent = (current + 1) + ' / ' + total;
+      lightbox.classList.add('open');
+    }
+    function close() { lightbox.classList.remove('open'); }
+
+    figures.forEach((f) => {
+      f.addEventListener('click', () => show(parseInt(f.dataset.index, 10)));
+    });
+    document.getElementById('lightbox-close').addEventListener('click', close);
+    document.getElementById('lightbox-prev').addEventListener('click', (e) => { e.stopPropagation(); show(current - 1); });
+    document.getElementById('lightbox-next').addEventListener('click', (e) => { e.stopPropagation(); show(current + 1); });
+    lightbox.addEventListener('click', (e) => { if (e.target === lightbox) close(); });
+    document.addEventListener('keydown', (e) => {
+      if (!lightbox.classList.contains('open')) return;
+      if (e.key === 'Escape') close();
+      if (e.key === 'ArrowLeft') show(current - 1);
+      if (e.key === 'ArrowRight') show(current + 1);
+    });
+  })();
+</script>
+</body>
+</html>
